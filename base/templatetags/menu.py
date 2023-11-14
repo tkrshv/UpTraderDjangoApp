@@ -1,4 +1,5 @@
 from django import template
+from django.utils.datastructures import MultiValueDictKeyError
 
 from base.models import Item
 
@@ -18,7 +19,7 @@ def draw_menu(context, menu):
             if item['id'] in selected_item_id_list:
                 item['child_items'] = get_child_items(items.values(), item['id'], selected_item_id_list)
         result_dict = {'items': primary_item}
-    except:
+    except MultiValueDictKeyError:
         result_dict = {
             'items': [
                 item for item in Item.objects.filter(menu__title=menu, parent=None).values()
